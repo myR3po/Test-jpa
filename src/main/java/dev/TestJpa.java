@@ -3,18 +3,16 @@ package dev;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.persistence.TypedQuery;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestJpa {
-
-	// TODO Créer une instance d’entityManagerFactory
-	// TODO Créer une instance d’entityManager
-	// TODO Exécuter une requête native qui permet d’extraire la liste de tous les
-	// articles
-	// TODO Afficher le résultat de la requête
-	//
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(TestJpa.class);
+	
 	public TestJpa() {
-		// TODO Auto-generated constructor stub
+		
 	}
 
 	public static void main(String[] args) {
@@ -25,11 +23,9 @@ public class TestJpa {
 		EntityManager entityManager = factory.createEntityManager();
 		entityManager.getTransaction().begin();
 
-		// Check database version
-		String sql = "select version()";
-
-		String result = (String) entityManager.createNativeQuery(sql).getSingleResult();
-		System.out.println(result);
+		TypedQuery<Article> article = entityManager.createQuery("SELECT a From Article a WHERE a.reference = 'F02'", Article.class);
+		
+		LOGGER.error(article.getSingleResult().toString());
 
 		entityManager.getTransaction().commit();
 		entityManager.close();
