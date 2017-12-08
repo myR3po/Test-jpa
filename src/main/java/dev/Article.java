@@ -1,8 +1,14 @@
 package dev;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -20,6 +26,13 @@ public class Article {
 	
 	@Column(name = "prix", nullable = false)
 	private Double price;
+	
+	@ManyToOne
+    @JoinColumn(name="fournisseurID", nullable=false)
+	private Fournisseur fournisseur;
+	
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "articles")
+	private Set<BonCommande> commands;
 	
 	public Article() {
 	}
@@ -54,6 +67,22 @@ public class Article {
 
 	public void setPrice(Double price) {
 		this.price = price;
+	}
+
+	public Fournisseur getFournisseur() {
+		return fournisseur;
+	}
+
+	public void setFournisseur(Fournisseur fournisseur) {
+		this.fournisseur = fournisseur;
+	}
+
+	public Set<BonCommande> getCommands() {
+		return commands;
+	}
+
+	public void setCommands(Set<BonCommande> commands) {
+		this.commands = commands;
 	}
 
 	@Override

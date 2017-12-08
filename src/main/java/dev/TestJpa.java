@@ -23,9 +23,12 @@ public class TestJpa {
 		EntityManager entityManager = factory.createEntityManager();
 		entityManager.getTransaction().begin();
 
-		TypedQuery<Article> article = entityManager.createQuery("SELECT a From Article a WHERE a.reference = 'F02'", Article.class);
+		TypedQuery<BonCommande> com = entityManager.createQuery("SELECT b From BonCommande b WHERE b.numero = 2", BonCommande.class);
 		
-		LOGGER.error(article.getSingleResult().toString());
+		BonCommande bc = com.getSingleResult();
+		
+		LOGGER.error(bc.toString());
+		bc.getArticles().stream().forEach(a -> {LOGGER.error(a.toString());});
 
 		entityManager.getTransaction().commit();
 		entityManager.close();
